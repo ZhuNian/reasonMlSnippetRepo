@@ -2,6 +2,8 @@ type expr =
   | Number(float)
   | Add(expr, expr)
   | Minus(expr, expr)
+  | Multiply(expr, expr)
+  | Divid(expr, expr)
   | Paren(expr)
 
 
@@ -9,6 +11,8 @@ let rec eval = fun
   | Number(r) => r
   | Add(r1, r2) => eval(r1) +. eval(r2)
   | Minus(r1, r2) => eval(r1) -. eval(r2)
+  | Multiply(r1, r2) => eval(r1) *. eval(r2)
+  | Divid(r1, r2) => eval(r1) /. eval(r2)
   | Paren(r) => eval(r)
 
 let getBlanks = (indent: int) => {
@@ -34,6 +38,18 @@ let rec print_ = (indent: int, input: expr) => {
       "," |> getLineWithIndent |> Js.log;
       exp2 |> print_(indent + 1);
       ")" |> getLineWithIndent |> Js.log; 
+    | Multiply(exp1, exp2) =>
+     "Multiply(" |> getLineWithIndent |> Js.log;
+      exp1 |> print_(indent + 1);
+      "," |> getLineWithIndent |> Js.log;
+      exp2 |> print_(indent + 1);
+      ")" |> getLineWithIndent |> Js.log; 
+    | Divid(exp1, exp2) =>
+     "Divid(" |> getLineWithIndent |> Js.log;
+      exp1 |> print_(indent + 1);
+      "," |> getLineWithIndent |> Js.log;
+      exp2 |> print_(indent + 1);
+      ")" |> getLineWithIndent |> Js.log;
     | Paren(exp) => 
       "(" |> getLineWithIndent |> Js.log;
       exp |> print_(indent + 1);
@@ -42,24 +58,4 @@ let rec print_ = (indent: int, input: expr) => {
 }  
 let print = expr => expr |> print_(0)
 
-/* let rec eval : type a. expr(a) => a = (input) =>
-  switch (input) {
-  | Value(Int(n)) => n
-  | Value(Bool(b)) => b
-  | Compare(expr1, expr2) =>
-    let (n1, n2) = (eval(expr1), eval(expr2));
-    n1 >= n2
-  | If(expr1, expr2, expr3) =>
-    if(eval(expr1)) {
-      eval(expr2)
-    }else{
-      eval(expr3)
-    }
-  }; */
-/* let expr1 =  Compare(Value(Int(3)), Value(Int(5)));
-let expr2 =  If(Value(Bool(false)), Value(Int(0)), Value(Int(1)));
-eval(Value(Int(3))) |> Js.log;
-eval(expr1) |> Js.log;
-eval(expr2) |> Js.log */
 
-/* Add(Number(3.), Number(4.)) |> print */
